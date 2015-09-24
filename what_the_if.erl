@@ -13,6 +13,6 @@ heh_fine() ->
   end.
 
   oh_god(N) ->
-    if N =:= 2 -> might_succed;
+    if N =:= 2 -> might_succeed;
       true -> always_does %% this is erlang's if/else
     end.
