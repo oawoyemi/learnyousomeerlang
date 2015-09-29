@@ -1,5 +1,14 @@
 -module(cases).
--export([beach/1, beachf/1]).
+-export([insert/2, beach/1, beachf/1]).
+
+nsert(X,[]) ->
+  [X];
+  insert(X, Set) ->
+    case lists:member(X,Set) of
+      true -> Set;
+      false -> [X|Set]
+    end.
+
 
 beach(Temperature) ->
   case Temperature of
