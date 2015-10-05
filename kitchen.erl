@@ -15,7 +15,7 @@ fridge1() ->
 
 fridge2(FoodList) ->
   receive
-    {Fron, {store, Food}} ->
+    {From, {store, Food}} ->
       From ! {self(), ok},
       fridge2([Food|FoodList]);
     {From, {take, Food}} ->
