@@ -13,10 +13,11 @@ fridge1() ->
     terminate ->
       ok
   end.
-
+% abstract process creation
+% ?MODULE is a macro returning current module name
 start(FoodList) ->
   spawn(?MODULE, fridge2, [FoodList]).
-  
+
 fridge2(FoodList) ->
   receive % waits until a message is received
     {From, {store, Food}} ->
