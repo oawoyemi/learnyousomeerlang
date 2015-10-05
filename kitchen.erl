@@ -33,13 +33,15 @@ fridge2(FoodList) ->
   end.
 
   store(Pid, Food) ->
+    % side effect using self?
+    % self is only required to receive return message so ok to abstract within function
     Pid ! {self(), {store, Food}},
-    receive
+    receive %message received back from called process
       {Pid, Msg} -> Msg
     end.
 
   take(Pid, Food) ->
     Pid ! {self(), {take, Food}},
-    receive
+    receive  %message received back from called process
       {Pid, Msg} -> Msg
     end.
