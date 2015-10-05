@@ -15,6 +15,7 @@ fridge1() ->
   end.
 % abstract process creation
 % ?MODULE is a macro returning current module name
+% logging and additional processes may also be initialised here.
 start(FoodList) ->
   spawn(?MODULE, fridge2, [FoodList]).
 
