@@ -14,9 +14,10 @@ fridge1() ->
   end.
 
 fridge2(FoodList) ->
-  receive
+  receive % waits until a message is received
     {From, {store, Food}} ->
       From ! {self(), ok},
+      %recursive call -  it will then be possible to retrieve the same item
       fridge2([Food|FoodList]);
     {From, {take, Food}} ->
       case lists:member(Food, FoodList) of
@@ -30,3 +31,5 @@ fridge2(FoodList) ->
     terminate ->
       ok
   end.
+
+  
