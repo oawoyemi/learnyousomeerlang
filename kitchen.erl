@@ -1,6 +1,7 @@
 -module(kitchen).
 -compile(export_all).
 
+
 fridge1() ->
   receive
     {From, {store, _Food}} ->
@@ -13,6 +14,9 @@ fridge1() ->
       ok
   end.
 
+start(FoodList) ->
+  spawn(?MODULE, fridge2, [FoodList]).
+  
 fridge2(FoodList) ->
   receive % waits until a message is received
     {From, {store, Food}} ->
