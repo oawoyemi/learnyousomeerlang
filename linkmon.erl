@@ -12,7 +12,7 @@ myproc() ->
 chain(0) ->
   receive
     _ -> ok
-  after 2000
+  after 2000 ->
       exit("chain dies here")
   end;
   chain(N) ->
