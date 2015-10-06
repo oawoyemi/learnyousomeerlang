@@ -12,9 +12,9 @@ myproc() ->
 chain(0) ->
   receive
     _ -> ok
-    after 2000
+  after 2000
       exit("chain dies here")
-    end;
+  end;
   chain(N) ->
     Pid = spawn(fun() -> chain(N-1) end),
     link(Pid),
