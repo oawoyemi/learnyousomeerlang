@@ -38,16 +38,32 @@ fridge2(FoodList) ->
       ok
   end.
 
-  store(Pid, Food) ->
-    % side effect using self?
-    % self is only required to receive return message so ok to abstract within function
+store(Pid, Food) ->
+  % side effect using self?
+  % self is only required to receive return message so ok to encapsulate within function
+  Pid ! {self(), {store, Food}},
+  receive %message received back from called Pid process
+    {Pid, Msg} -> Msg
+  end.
+
+take(Pid, Food) ->
+  Pid ! {self(), {take, Food}},
+  receive  %message received back from called Pid process
+    {Pid, Msg} -> Msg
+  end.
+
+  store2(Pid, Food) ->
     Pid ! {self(), {store, Food}},
-    receive %message received back from called process
+    receive
       {Pid, Msg} -> Msg
+    after 3000 ->
+      timeout
     end.
 
-  take(Pid, Food) ->
+  take2(Pid, Food) ->
     Pid ! {self(), {take, Food}},
     receive  %message received back from called process
       {Pid, Msg} -> Msg
+    after 3000 ->
+      timeout
     end.
