@@ -33,7 +33,7 @@ start_critic2() ->
     process_flag(trap_exit, true),
     Pid = spawn_link(?MODULE, critic2, []),
     % assign a name
-    register(critic, Pid),
+  %  register(critic, Pid),
     receive
       {'EXIT' Pid, normal} -> %not a crash
         ok;
