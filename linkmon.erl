@@ -31,17 +31,16 @@ start_critic2() ->
 
   restarter() ->
     process_flag(trap_exit, true),
-    Pid = spawn_link(?MODULE, critic2, []),
-    % assign a name
-  %  register(critic, Pid),
+    Pid = spawn_link(?MODULE, critic, []),
+    register(critic, Pid),
     receive
-      {'EXIT' Pid, normal} -> %not a crash
-        ok;
+      {'EXIT', Pid, normal} -> % not a crash
+      ok;
       {'EXIT', Pid, shutdown} -> % manual termination, not a crash
-        ok;
+      ok;
       {'EXIT', Pid, _} ->
-        restarter()
-    end.
+    restarter()
+  end.
 
 judge(Pid, Band, Album) ->
   Pid ! {self(), {Band, Album}},
