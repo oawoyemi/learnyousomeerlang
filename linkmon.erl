@@ -31,7 +31,7 @@ start_critic2() ->
 
   restarter() ->
     process_flag(trap_exit, true),
-    Pid = spawn_link(?MODULE, critic, []),
+    Pid = spawn_link(?MODULE, critic2, []),
     register(critic, Pid),
     receive
       {'EXIT', Pid, normal} -> % not a crash
