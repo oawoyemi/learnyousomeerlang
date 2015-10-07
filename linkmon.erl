@@ -37,8 +37,6 @@ start_critic2() ->
     receive
       {'EXIT' Pid, normal} -> %not a crash
         ok;
-      {'EXIT'. Pid, shutdown} -> % manual termination, not a crash
-        ok;
       {'EXIT', Pid, shutdown} -> % manual termination, not a crash
         ok;
       {'EXIT', Pid, _} ->
