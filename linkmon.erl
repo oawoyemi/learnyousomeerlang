@@ -28,9 +28,10 @@ start_critic() ->
 % supervisor
 start_critic2() ->
   spawn(?MODULE, restarter, []).
+
   restarter() ->
     process_flag(trap_exit, true),
-    Pid = spawn_link(?MODULE, critic, []),
+    Pid = spawn_link(?MODULE, critic2, []),
     % assign a name
     register(critic, Pid),
     receive
