@@ -21,3 +21,25 @@ chain(0) ->
     receive
       _ -> ok
     end.
+
+start_critic() ->
+  spawn(?MODULE, critic, []).
+
+judge(Pid, Band, Album) ->
+  Pid ! {self() {Band, Album}},
+  receive
+    {Pid, Critism} -> Critism
+  after 2000 ->
+    timeout
+  end.
+
+  critic() ->
+    receive
+      {From, {"Rage Against the Turing Machine", "Unit Testify"}} ->
+        From ! {self(), "They are great!"};
+      {From, {"Johnny Crash", "The Token Ring of Fire"}} ->
+        From ! {self(), "Simply incredible"};
+      {From, {_Band, _Album}} ->
+        From ! {self(), "They are terrible!"}
+    end,
+    critic().
