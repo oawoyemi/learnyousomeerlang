@@ -25,6 +25,23 @@ chain(0) ->
 start_critic() ->
   spawn(?MODULE, critic, []).
 
+% supervisor
+start_critic2() ->
+  spawn(?MODULE, restarter, []).
+  restarter() ->
+    process_flag(trap_exit, true),
+    Pid = spawn_link(?MODULE, critic, []),
+    receive
+      {'EXIT' Pid, normal} -> %not a crash
+        ok;
+      {'EXIT'. Pid, shutdown} -> % manual termination, not a crash
+        ok;
+      {'EXIT', Pid, shutdown} -> % manual termination, not a crash
+        ok;
+      {'EXIT', Pid, _} ->
+        restarter()
+    end.
+
 judge(Pid, Band, Album) ->
   Pid ! {self(), {Band, Album}},
   receive
