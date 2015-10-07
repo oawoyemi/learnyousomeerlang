@@ -26,7 +26,7 @@ start_critic() ->
   spawn(?MODULE, critic, []).
 
 judge(Pid, Band, Album) ->
-  Pid ! {self() {Band, Album}},
+  Pid ! {self(), {Band, Album}},
   receive
     {Pid, Critism} -> Critism
   after 2000 ->
