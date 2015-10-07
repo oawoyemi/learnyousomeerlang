@@ -31,6 +31,8 @@ start_critic2() ->
   restarter() ->
     process_flag(trap_exit, true),
     Pid = spawn_link(?MODULE, critic, []),
+    % assign a name
+    register(critic, Pid),
     receive
       {'EXIT' Pid, normal} -> %not a crash
         ok;
@@ -50,6 +52,16 @@ judge(Pid, Band, Album) ->
     timeout
   end.
 
+  judge2(Band, Album) ->
+    Ref = make_ref(),
+    critic ! {self(), Ref, {Band, Album}},
+    Pid = whereis(critic),
+    receive
+      {Ref, Critism} -> Critism
+    after 2000 ->
+      timeout
+    end.
+
   critic() ->
     receive
       {From, {"Rage Against the Turing Machine", "Unit Testify"}} ->
@@ -60,3 +72,14 @@ judge(Pid, Band, Album) ->
         From ! {self(), "They are terrible!"}
     end,
     critic().
+
+    critic2() ->
+      receive
+        {From, Ref, {"Rage Against the Turing Machine", "Unit Testify"}} ->
+          From ! {Ref, "They are great!"};
+        {From, Ref, {"Johnny Crash", "The Token Ring of Fire"}} ->
+          From ! {Ref, "Simply incredible"};
+        {From, Ref, {_Band, _Album}} ->
+          From ! {self(), "They are terrible!"}
+      end,
+      critic2().
