@@ -53,7 +53,6 @@ judge(Pid, Band, Album) ->
   judge2(Band, Album) ->
     Ref = make_ref(),
     critic ! {self(), Ref, {Band, Album}},
-    Pid = whereis(critic),
     receive
       {Ref, Critism} -> Critism
     after 2000 ->
