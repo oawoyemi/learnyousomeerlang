@@ -1,0 +1,23 @@
+-module(linkmon).
+-compile(export_all).
+
+myproc() ->
+  timer:sleep(5000),
+  exit(reason).
+
+%take an integer N, start N processes linked one to the other.
+% In order to be able to pass the N-1 argument to the next 'chain' process (which calls spawn/1),
+% I wrap the call inside an anonymous function so it doesn't need arguments anymore.
+% Calling spawn(?MODULE, chain, [N-1]) would have done a similar job.
+chain(0) ->
+  receive
+    _ -> ok
+  after 2000 ->
+      exit("chain dies here")
+  end;
+  chain(N) ->
+    Pid = spawn(fun() -> chain(N-1) end),
+    link(Pid),
+    receive
+      _ -> ok
+    end.
